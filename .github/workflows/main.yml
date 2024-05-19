@@ -1,0 +1,49 @@
+name: Docker Elastic Bean Deployment
+
+on:
+  push: 
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Setup Docker Build
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker Image
+      run: docker build -t mk671326/docker-react -f Dockerfile.dev .
+
+    - name: Run Test Coverage
+      run: docker run -e CI=true npm run test -- --coverage
+
+    - name: Dockerhub Login
+      uses: docker/login-action@v
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Docker Container Publish
+      run: docker push mk67132/docker-react
+			
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Deploy to Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v17
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: "docker-react"
+        environment_name: "Docker-react-env"
+        region: "us-east-1"
+        version_label: "docker-react-$(date +'%Y%m%d%H%M%S')"
+        deployment_package: "."
