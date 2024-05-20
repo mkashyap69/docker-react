@@ -29,8 +29,8 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Docker Container Publish
-      run: docker push mk671326/docker-react
+    # - name: Docker Container Publish
+    #   run: docker push mk671326/docker-react
 			
   deploy:
     needs: build
