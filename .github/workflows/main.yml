@@ -38,6 +38,9 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+
+    - name: Zip deployment package
+      run: zip -r deployment-package.zip ./*
     
     - name: Deploy to Elastic Beanstalk
       uses: einaregilsson/beanstalk-deploy@v17
@@ -48,4 +51,4 @@ jobs:
         environment_name: "Docker-react-env"
         region: "us-east-1"
         version_label: "docker-react-$(date +'%Y%m%d%H%M%S')"
-        deployment_package: "."
+        deployment_package: "deployment-package.zip"
