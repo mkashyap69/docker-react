@@ -1,4 +1,4 @@
-name: Docker Elastic Bean Deployment
+name: Docker Elastic Beanstalk Deployment
 
 on:
   push: 
@@ -21,7 +21,7 @@ jobs:
       run: docker build -t mk671326/docker-react -f Dockerfile.dev .
 
     - name: Run Test Coverage
-      run: docker run -e CI=true npm run test -- --coverage
+      run: docker run -e CI=true mk671326/docker-react npm run test -- --coverage
 
     - name: Dockerhub Login
       uses: docker/login-action@v3.1.0
@@ -30,13 +30,16 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Docker Container Publish
-      run: docker push mk67132/docker-react
+      run: docker push mk671326/docker-react
 			
   deploy:
     needs: build
     runs-on: ubuntu-latest
   
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    
     - name: Deploy to Elastic Beanstalk
       uses: einaregilsson/beanstalk-deploy@v17
       with:
