@@ -52,3 +52,4 @@ jobs:
         region: "us-east-1"
         version_label: docker-react-${{ github.run_id }}
         deployment_package: "deployment-package.zip"
+        use_existing_version_if_available: true
