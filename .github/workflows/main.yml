@@ -50,5 +50,5 @@ jobs:
         application_name: "docker-react"
         environment_name: "Docker-react-env"
         region: "us-east-1"
-        version_label: "docker-react-$(date +'%Y%m%d%H%M%S')"
+        version_label: "docker-react-${{ github.run_id }}"
         deployment_package: "deployment-package.zip"
