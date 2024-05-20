@@ -30,8 +30,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     # - name: Docker Container Publish
-    #   run: docker push mk671326/docker-react
-			
+    #   run: docker push mk671326/docker-react		
   deploy:
     needs: build
     runs-on: ubuntu-latest
